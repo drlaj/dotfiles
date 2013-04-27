@@ -133,7 +133,7 @@ command! -nargs=* Wrap set wrap linebreak nolist
 
 ",l shows invisible characters
 nmap <leader>l :set list!<CR>
-set listchars=tab:>.,trail:.,extends:#,nbsp:.
+set listchars=tab:▸\ ,eol:¬,trail:.,extends:#,nbsp:.
 
 " do not show tabs on html and xml files
 autocmd filetype html,xml set listchars-=tab:>.
