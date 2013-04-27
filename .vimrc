@@ -51,7 +51,7 @@ set background=dark
 colorscheme solarized
 
 " set tab line
-set showtabline
+" set showtabline
 
 " increase vim history size
 set history=1000
