@@ -3,7 +3,7 @@
 " be iMproved
 " required!
 set nocompatible
-filetype off
+filetype on 
 
 """"" vundle
 
@@ -20,7 +20,7 @@ Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/nerdtree'
 Bundle 'kien/ctrlp.vim'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'Lokaltog/powerline'
+Bundle 'jcf/vim-latex'
 
 " Bundle 'tpope/vim-rails'
 " Bundle 'tsaleh/vim-matchit'
@@ -28,18 +28,16 @@ Bundle 'Lokaltog/powerline'
 " Bundle 'tomtom/tcomment_vim'
 " Bundle 'ervandew/supertab'
 " Bundle 'gmarik/snipmate.vim'
-
 " Bundle 'cakebaker/scss-syntax.vim'
-" Bundle 'flazz/vim-colorschemes'
+
+" Bundle 'Lokaltog/powerline' 
+" set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 
 " vim-scripts repos
 Bundle 'repeat.vim'
-" Bundle 'minibufexpl.vim'
 
 " enable filetype plugins
 filetype plugin indent on " required!
-
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 
 " quickly edit and source vimrc
 nmap ;v :e ~/.vimrc<CR>
@@ -49,9 +47,6 @@ nmap ;u :source ~/.vimrc<CR>
 set term=xterm-256color
 set background=dark
 colorscheme solarized
-
-" set tab line
-" set showtabline
 
 " increase vim history size
 set history=1000
@@ -76,6 +71,10 @@ set hlsearch
 
 " set enter to clear highlight
 noremap <CR> :nohlsearch<CR>
+
+" keep searches in the middle
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " set search to ignore case
 set ignorecase
@@ -105,9 +104,6 @@ set ch=1
 " always show a status line
 set laststatus=2
 
-" windows do not have to remain equal on resize
-" set noea
-
 """"" tabs, text and indentation
 
 " replace tabs with spaces
@@ -125,14 +121,14 @@ set shiftround
 " insert tabs on the start of a line according to shiftwidth
 set smarttab
 
-" use context to insert the appropriate number of spaces
+" sensible indentation replacements
 set softtabstop=2
 
 " cmd wrap turns on wordwrap
 command! -nargs=* Wrap set wrap linebreak nolist
 
 ",l shows invisible characters
-nmap <leader>l :set list!<CR>
+" nmap <leader>l :set list!<CR>
 set listchars=tab:▸\ ,eol:¬,trail:.,extends:#,nbsp:.
 
 " do not show tabs on html and xml files
@@ -153,6 +149,12 @@ set enc=utf-8
 
 " turn on autoread
 set autoread
+
+" common opens
+cno $h e ~/
+cno $d e ~/Desktop/
+cno $c e ~/Code/
+cno $$ e ./
 
 """"" spelling
 
@@ -253,7 +255,7 @@ nnoremap <leader>m :CtrlPMRUFiles<CR>
 let g:ctrlp_match_window_bottom = 1
 
 " set max height of the match window 
-let g:ctrlp_max_height = 10
+let g:ctrlp_max_height = 15
 
 " specify local working directory
 let g:ctrlp_working_path_mode = 'ra'
@@ -275,14 +277,4 @@ let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(
 " show hidden files by default
 let NERDTreeShowHidden=1
 
-""""" minibuffer expl
-
-" make tabs show complete on one line
-" let g:miniBufExplTabWrap = 1
-" let g:miniBufExplMapWindowNavVim = 1
-" let g:miniBufExplMapWindowNavArrows = 1
-" let g:miniBufExplMapCTabSwitchBufs = 1
-" let g:miniBufExplModSelTarget = 1
-
-" make minibufexpl automatically refresh when needed
-" autocmd BufRead,BufNew,BufWritePost,CursorMovedI,CursorMoved * UMiniBufExplorer
+set shell=zsh
