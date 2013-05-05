@@ -20,9 +20,11 @@ Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/nerdtree'
 Bundle 'kien/ctrlp.vim'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'jcf/vim-latex'
+Bundle 'tpope/vim-rails'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'vim-haml'
 
-" Bundle 'tpope/vim-rails'
+" Bundle 'jcf/vim-latex'
 " Bundle 'tsaleh/vim-matchit'
 " Bundle 'skwp/vim-rspec'
 " Bundle 'tomtom/tcomment_vim'
@@ -38,10 +40,13 @@ Bundle 'repeat.vim'
 
 " enable filetype plugins
 filetype plugin indent on " required!
+filetype plugin on
 
 " quickly edit and source vimrc
 nmap ;v :e ~/.vimrc<CR>
 nmap ;u :source ~/.vimrc<CR>
+
+set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 
 " color preferences
 set term=xterm-256color
@@ -99,7 +104,7 @@ set linespace=1
 set showcmd
 
 " set command line height 
-set ch=1
+set ch=2
 
 " always show a status line
 set laststatus=2
@@ -128,7 +133,7 @@ set softtabstop=2
 command! -nargs=* Wrap set wrap linebreak nolist
 
 ",l shows invisible characters
-" nmap <leader>l :set list!<CR>
+nmap <leader>l :set list!<CR>
 set listchars=tab:▸\ ,eol:¬,trail:.,extends:#,nbsp:.
 
 " do not show tabs on html and xml files
@@ -155,6 +160,12 @@ cno $h e ~/
 cno $d e ~/Desktop/
 cno $c e ~/Code/
 cno $$ e ./
+
+" fast edits to current directory
+map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 """"" spelling
 
@@ -278,3 +289,34 @@ let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(
 let NERDTreeShowHidden=1
 
 set shell=zsh
+
+" :autocmd BufNewFile *.html 0r ~/.vim/templates/html.tpl
+:autocmd BufNewFile * silent! 0r ~/.vim/templates/%:e.tpl
+
+
+""""" multipurpose tab key
+
+function! InsertTabWrapper()
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-p>"
+  endif
+endfunction
+
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <s-tab> <c-n>
+
+""""" rename current file
+
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+map <leader>s :call RenameFile()<cr>
