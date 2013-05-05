@@ -23,6 +23,7 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'tpope/vim-rails'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-haml'
+Bundle 'sjl/gundo.vim'
 
 " Bundle 'jcf/vim-latex'
 " Bundle 'tsaleh/vim-matchit'
@@ -213,7 +214,7 @@ autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldma
 noremap ,cd :cd %:p:h<CR>:pwd<CR>
 
 " tabs
-map <C-t> <esc>:tabnew<CR>
+" map <C-t> <esc>:tabnew<CR>
 
 " buffer movements
 map <right> :bn<CR>
