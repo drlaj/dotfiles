@@ -54,6 +54,7 @@ set term=xterm-256color
 set background=dark
 colorscheme solarized
 
+
 " increase vim history size
 set history=1000
 
