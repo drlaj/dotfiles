@@ -53,6 +53,7 @@ set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 set term=xterm-256color
 set background=dark
 colorscheme solarized
+let g:solarized_termtrans = 1
 
 
 " increase vim history size
