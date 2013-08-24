@@ -22,7 +22,6 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'tpope/vim-rails'
 Bundle 'vim-ruby/vim-ruby'
-Bundle 'vim-haml'
 Bundle 'sjl/gundo.vim'
 
 " Bundle 'jcf/vim-latex'
