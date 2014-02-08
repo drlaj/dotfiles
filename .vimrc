@@ -52,7 +52,8 @@ set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 set term=xterm-256color
 set background=dark
 colorscheme solarized
-let g:solarized_termtrans = 1
+" let g:solarized_termtrans=1
+" let g:solarized_termcolors=256
 
 
 " increase vim history size
@@ -65,7 +66,7 @@ let mapleader = ","
 set visualbell
 
 " turn on syntax highlighting
-syntax on
+syntax enable 
 
 " turn on line numbering
 set nu
@@ -128,7 +129,7 @@ set shiftround
 " insert tabs on the start of a line according to shiftwidth
 set smarttab
 
-" sensible indentation replacements
+" sensible indentation replacements 
 set softtabstop=2
 
 " cmd wrap turns on wordwrap
@@ -197,19 +198,18 @@ vnoremap X "_X
 
 set nobackup
 set noswapfile
-" set undodir=~/.vim/tmp/undo/
-" set backupdir=~/.vim/tmp/backup/
-" set directory=~/.vim/tmp/swap/
 
 """"" autocompletion
 
 set ofu=syntaxcomplete#Complete
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType ruby set ai sw=2 sts=2 et
 
-autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
+if has("autocmd")
+  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+  autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType ruby set ai sw=2 sts=2 et
+  autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
+endif
 
 " map ,cd to change to the directory of the open file
 noremap ,cd :cd %:p:h<CR>:pwd<CR>
