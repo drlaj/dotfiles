@@ -1,75 +1,200 @@
 " drlaj .vimrc
 
-" be iMproved
-" required!
+"" Vundle
+"" General
+"" Colours
+"" Tabs/Spaces
+"" Search/Matching
+"" Spelling
+"" Shortcuts
+"" Statusline
+"" Hitlist
+
+" be iMproved, required
 set nocompatible
-filetype on 
+filetype off
 
-""""" vundle
+"""""""""" Vundle
 
-" append vundle to runtime path
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" set the runtime path to include Vundle and intialise
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" let Vundle manage Vundle
-" required!
-Bundle 'gmarik/vundle'
+" let Vundle manage Vundle, required
+Plugin 'gmarik/vundle'
 
-" github repos
-Bundle 'tpope/vim-surround'
-Bundle 'scrooloose/nerdtree'
-Bundle 'kien/ctrlp.vim'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'tpope/vim-rails'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'sjl/gundo.vim'
+Plugin 'Lokaltog/vim-distinguished'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'pangloss/vim-javascript'
+Plugin 'elzr/vim-json'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+" Plugin 'marijnh/tern_for_vim'
 
-" Bundle 'jcf/vim-latex'
-" Bundle 'tsaleh/vim-matchit'
-" Bundle 'skwp/vim-rspec'
-" Bundle 'tomtom/tcomment_vim'
-" Bundle 'ervandew/supertab'
-" Bundle 'gmarik/snipmate.vim'
-" Bundle 'cakebaker/scss-syntax.vim'
+Plugin 'kien/ctrlp.vim'
+    " files
+    nnoremap <leader>f :CtrlP<CR>
+    " buffers
+    nnoremap <leader>b :CtrlPBuffer<CR>
+    " recents
+    nnoremap <leader>m :CtrlPMRUFiles<CR>
+    " place match window at the bottom
+    let g:ctrlp_match_window_bottom = 1
+    " set max height of the match window
+    let g:ctrlp_max_height = 10
+    " specify local working directory
+    let g:ctrlp_working_path_mode = 'ra'
+    " scan dot files and folders
+    let g:ctrlp_show_hidden = 1
+    " ignore intermediates, version controlled files and media
+    let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
 
-" Bundle 'Lokaltog/powerline' 
-" set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+Plugin 'scrooloose/nerdtree'
+    " ,n toggles nerd tree
+    :noremap ,n :NERDTreeToggle<cr>
+    " ,r goto directory of current file
+    :noremap ,r :NERDTreeFind<cr>
+    " show hidden files by default
+    let NERDTreeShowHidden=0
 
-" vim-scripts repos
-Bundle 'repeat.vim'
+Plugin 'Raimondi/delimitMate'
+    let g:delimitMate_expand_cr = 1
+    let g:delimitMate_expand_space = 1
+    imap <C-c> <CR><ESc>O
 
-" enable filetype plugins
-filetype plugin indent on " required!
-filetype plugin on
+Plugin 'scrooloose/syntastic'
+    let g:syntastic_javascript_checkers=['jshint']
+    let g:syntastic_check_on_open=1
 
-" quickly edit and source vimrc
-nmap ;v :e ~/.vimrc<CR>
-nmap ;u :source ~/.vimrc<CR>
+" Plugin 'Valloric/YouCompleteMe'
+"   let g:ycm_add_preview_to_completeopt=0
+"   let g:ycm_confirm_extra_conf=0
+"   set completeopt-=preview
 
-set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+" required
+call vundle#end()
 
-" color preferences
-set term=xterm-256color
-set background=dark
-colorscheme solarized
-" let g:solarized_termtrans=1
-" let g:solarized_termcolors=256
+" required
+filetype plugin indent on
 
 
-" increase vim history size
-set history=1000
+
+"""""""""" General
+
+" turn on syntax highlighting
+syntax enable
 
 " set mapleader to comma
 let mapleader = ","
 
-" no sounds please
-set visualbell
+" set jj to escape
+imap jj <Esc>
 
-" turn on syntax highlighting
-syntax enable 
+" increase vim history size
+set history=1000
+
+" no sounds
+set visualbell
 
 " turn on line numbering
 set nu
+
+" show available command completions
+set showcmd
+
+" always show a status line
+set laststatus=2
+
+" set height of the command-line
+set ch=1
+
+" set minimal number of lines to scroll when the cursor gets off the screen
+set so=7
+
+" CTRL-e and CTRL-y each page 10 lines
+:nnoremap <C-e> 10<C-e>
+:nnoremap <C-y> 10<C-y>
+
+" copy indent from current line when starting a new line
+set autoindent
+
+" perform smart indenting when starting a new line
+set smartindent
+
+" set UTF-8 as the standard encoding
+set enc=utf-8
+
+" turn on autoread
+set autoread
+
+" simple delete and backspace
+vnoremap x "_x
+vnoremap X "_X
+
+" set shell
+set shell=zsh
+
+" set change marker
+set cpoptions+=$
+
+" turn off backup and swap files
+set nobackup
+set noswapfile
+
+" easy switching from unsaved hidden buffers
+set hidden
+
+" highlight current line
+set cursorline
+
+" enable completion 
+set omnifunc=syntaxcomplete#Complete
+
+" cmd wrap turns on wordwrap
+" http://vimcasts.org/episodes/soft-wrapping-text/
+command! -nargs=* Wrap set wrap linebreak nolist
+
+
+
+"""""""""" Colours
+
+" solarized
+set term=xterm-256color
+set background=dark
+colorscheme solarized
+
+" distinguished
+"colorscheme distinguished
+
+
+
+"""""""""" Tabs/Spaces
+
+" http://vimcasts.org/episodes/tabs-and-spaces/
+
+" expand tabs into spaces
+set expandtab
+
+" specify width of a tab character
+set tabstop=4
+
+" set number of spaces to use for each step of indent e.g. << or >> in normal mode
+set shiftwidth=4
+
+" make tab and backspace in insert mode behave the same as indent commands in normal mode
+set softtabstop=4
+
+" round indent to multiple of shiftwidth
+set shiftround
+
+" insert tabs on the start of a line according to shiftwidth
+set smarttab
+
+
+
+"""""""""" Search/Matching
 
 " move the cursor to the matched string
 set incsearch
@@ -77,7 +202,7 @@ set incsearch
 " highlight all matches
 set hlsearch
 
-" set enter to clear highlight
+" hitting enter clears search
 noremap <CR> :nohlsearch<CR>
 
 " keep searches in the middle
@@ -87,90 +212,12 @@ nnoremap N Nzzzv
 " set search to ignore case
 set ignorecase
 
-" ignore case when the pattern is all lowercase
+" override ignorecase when the pattern contains upper case characters
 set smartcase
 
-" Ctrl-e and Ctrl-y page 10 lines
-:nnoremap <C-e> 10<C-e>
-:nnoremap <C-y> 10<C-y>
 
-" set jj to escape
-imap jj <Esc>
 
-" display file name in terminal window title
-set title
-
-" set vertical space between lines
-set linespace=1
-
-" show available command completions
-set showcmd
-
-" set command line height 
-set ch=2
-
-" always show a status line
-set laststatus=2
-
-""""" tabs, text and indentation
-
-" replace tabs with spaces
-set expandtab
-
-" set tab equal to two spaces
-set tabstop=2
-
-" specify column width for reindent operations << and >>
-set shiftwidth=2
-
-" round spaces to nearest tab when using << >>
-set shiftround
-
-" insert tabs on the start of a line according to shiftwidth
-set smarttab
-
-" sensible indentation replacements 
-set softtabstop=2
-
-" cmd wrap turns on wordwrap
-command! -nargs=* Wrap set wrap linebreak nolist
-
-",l shows invisible characters
-nmap <leader>l :set list!<CR>
-set listchars=tab:▸\ ,eol:¬,trail:.,extends:#,nbsp:.
-
-" do not show tabs on html and xml files
-autocmd filetype html,xml set listchars-=tab:>.
-
-" turn on auto indent
-set autoindent
-
-" perform smart indenting when starting a new line
-set smartindent
-
-" do not add comment prefix when I enter or o/O on a comment line
-" set formatoptions-=or
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-" Use UTF-8 as the default buffer encoding
-set enc=utf-8
-
-" turn on autoread
-set autoread
-
-" common opens
-cno $h e ~/
-cno $d e ~/Desktop/
-cno $c e ~/Code/
-cno $$ e ./
-
-" fast edits to current directory
-map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
-
-""""" spelling
+"""""""""" Spelling
 
 " pressing ,ss will toggle spell checking
 map <leader>ss :setlocal spell!<CR>
@@ -181,7 +228,7 @@ map <leader>sn ]s
 " goto previous error
 map <leader>sp [s
 
-" add the word to the good list
+" add the word to the dictionary
 map <leader>sa zg
 
 " show suggestions
@@ -190,40 +237,40 @@ map <leader>s? z=
 " hide the default mode text
 set noshowmode
 
-" simple delete and backspace
-vnoremap x "_x
-vnoremap X "_X
 
-""""" backups
 
-set nobackup
-set noswapfile
+"""""""""" Shortcuts
 
-""""" autocompletion
+" quickly edit vimrc
+nmap ;v :e ~/.vimrc<CR>
 
-set ofu=syntaxcomplete#Complete
+" quickly source vimrc
+nmap ;u :source ~/.vimrc<CR>
 
-if has("autocmd")
-  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-  autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType ruby set ai sw=2 sts=2 et
-  autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
-endif
+" ,l to display hidden characters
+" http://vimcasts.org/episodes/show-invisibles/
+nmap <leader>l :set list!<CR>
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
-" map ,cd to change to the directory of the open file
+" quick opens
+cno $h e ~/
+cno $d e ~/Desktop/
+cno $$ e ./
+map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
+" ,cd changes to the current working directory
 noremap ,cd :cd %:p:h<CR>:pwd<CR>
 
-" tabs
-" map <C-t> <esc>:tabnew<CR>
-
-" buffer movements
+" quick buffer movements
 map <right> :bn<CR>
-map <left> :bp<CR>
 map <C-n> :bn<CR>
+map <left> :bp<CR>
 map <C-p> :bp<CR>
 
-" unix cmd line modifiers work on the vim cmd line
+" unix cmdline modifiers work on the vim cmd line
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <C-F> <Right>
@@ -245,80 +292,78 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" force sudo for open file
-cmap w!! w !sudo tee % >/dev/null
-
-set hidden
-
 " shortcut list buffers
 map <C-b> :ls<cr>
 
-""""" ctrlp tree plugin
-
-" files
-nnoremap <leader>f :CtrlP<CR>
-
-" buffers
-nnoremap <leader>b :CtrlPBuffer<CR>
-
-" recents
-nnoremap <leader>m :CtrlPMRUFiles<CR>
-
-" place match window at the bottom
-let g:ctrlp_match_window_bottom = 1
-
-" set max height of the match window 
-let g:ctrlp_max_height = 15
-
-" specify local working directory
-let g:ctrlp_working_path_mode = 'ra'
-
-" scan dot files and folders
-let g:ctrlp_show_hidden = 1
-
-" ignore intermediates, version controls files and media
-let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
-
-""""" nerd tree plugin
-
-" toggle NERD tree
-:noremap ,n :NERDTreeToggle<cr>
-
-" open directory of current file
-:noremap ,r :NERDTreeFind<cr>
-
-" show hidden files by default
-let NERDTreeShowHidden=1
-
-set shell=zsh
-
-" :autocmd BufNewFile *.html 0r ~/.vim/templates/html.tpl
-:autocmd BufNewFile * silent! 0r ~/.vim/templates/%:e.tpl
-
-
-""""" multipurpose tab key
-
-function! InsertTabWrapper()
-  let col = col('.') - 1
-  if !col || getline('.')[col - 1] !~ '\k'
-    return "\<tab>"
-  else
-    return "\<c-p>"
-  endif
+" Remove trailing whitespace from all lines
+" http://vimcasts.org/episodes/tidying-whitespace/
+function! <SID>StripTrailingWhitespaces()
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    let @/=_s
+    call cursor(l, c)
 endfunction
+nnoremap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
 
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
+"nnoremap <F5> :%s/\s\+$//e<CR>
 
-""""" rename current file
 
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
-endfunction
-map <leader>s :call RenameFile()<cr>
+
+"""""""""" Statusline
+
+"set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+
+set statusline =%#identifier#
+
+" tail of the file name
+set statusline+=[%t]
+set statusline+=%*
+
+" filetype
+set statusline+=%y
+
+" read-only flag
+set statusline+=%#identifier#
+set statusline+=%r
+set statusline+=%*
+
+" modified flag
+set statusline+=%#identifier#
+set statusline+=%m
+set statusline+=%*
+
+" paste flag
+set statusline+=%#error#
+set statusline+=%{&paste?'[paste]':''}
+set statusline+=%*
+
+" switch to right side of status line 
+set statusline+=%=      
+
+" cursor column
+set statusline+=%c,     
+
+" cursor line/total lines
+set statusline+=%l/%L   
+
+
+
+"""""""""" Hitlist
+
+" force sudo for open file
+cmap w!! w !sudo tee % >/dev/null
+
+" do not show tabs on html and xml files
+" autocmd filetype html,xml set listchars-=tab:>.
+
+" do not add comment prefix when I enter or o/O on a comment line
+" autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+"if has("autocmd")
+"  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"  autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+"  autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"  autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
+"endif
