@@ -36,6 +36,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}"
 # use vim
 export EDITOR=vim
 alias vi='vim'
+alias vim=/usr/local/bin/vim
 
 # confirm rm *
 set rmstar
@@ -106,6 +107,8 @@ setopt HIST_VERIFY
 # when searching for history entries in the line editor, do not display duplicates of a line previously found
 setopt HIST_FIND_NO_DUPS
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# add mongo to path
+export PATH=/usr/local/mongodb/bin:$PATH
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# add heroku to path
+export PATH="/usr/local/heroku/bin:$PATH"

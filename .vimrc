@@ -31,6 +31,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
+Plugin 'Shutnik/jshint2.vim'
 " Plugin 'marijnh/tern_for_vim'
 
 Plugin 'kien/ctrlp.vim'
@@ -59,10 +60,10 @@ Plugin 'scrooloose/nerdtree'
     " show hidden files by default
     let NERDTreeShowHidden=0
 
-Plugin 'Raimondi/delimitMate'
-    let g:delimitMate_expand_cr = 1
-    let g:delimitMate_expand_space = 1
-    imap <C-c> <CR><ESc>O
+"Plugin 'Raimondi/delimitMate'
+"    let g:delimitMate_expand_cr = 1
+"    let g:delimitMate_expand_space = 1
+"    imap <C-c> <CR><ESc>O
 
 Plugin 'scrooloose/syntastic'
     let g:syntastic_javascript_checkers=['jshint']
@@ -156,7 +157,8 @@ set omnifunc=syntaxcomplete#Complete
 " http://vimcasts.org/episodes/soft-wrapping-text/
 command! -nargs=* Wrap set wrap linebreak nolist
 
-
+" backspace behaves as expected
+set bs=2
 
 """""""""" Colours
 
@@ -350,7 +352,7 @@ set statusline+=%l/%L
 
 
 
-"""""""""" Hitlist
+"""""""""" Shitlist
 
 " force sudo for open file
 cmap w!! w !sudo tee % >/dev/null
