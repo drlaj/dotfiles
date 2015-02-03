@@ -32,6 +32,7 @@ Plugin 'elzr/vim-json'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Shutnik/jshint2.vim'
+Plugin 'blueyed/vim-diminactive'
 " Plugin 'marijnh/tern_for_vim'
 
 Plugin 'kien/ctrlp.vim'
