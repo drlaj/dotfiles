@@ -36,7 +36,6 @@ Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'altercation/vim-colors-solarized'
 
-
 " experimental
 "Plugin 'Valloric/YouCompleteMe'
 "Plugin 'marijnh/tern_for_vim'
