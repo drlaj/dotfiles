@@ -8,6 +8,7 @@
 "" Spelling
 "" Shortcuts
 "" Statusline
+"" Plugin Config
 "" Hitlist
 
 " be iMproved, required
@@ -22,57 +23,35 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/vundle'
-
-Plugin 'Lokaltog/vim-distinguished'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'pangloss/vim-javascript'
-Plugin 'elzr/vim-json'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Shutnik/jshint2.vim'
-" Plugin 'marijnh/tern_for_vim'
-
+" keepers
 Plugin 'kien/ctrlp.vim'
-    " files
-    nnoremap <leader>f :CtrlP<CR>
-    " buffers
-    nnoremap <leader>b :CtrlPBuffer<CR>
-    " recents
-    nnoremap <leader>m :CtrlPMRUFiles<CR>
-    " place match window at the bottom
-    let g:ctrlp_match_window_bottom = 1
-    " set max height of the match window
-    let g:ctrlp_max_height = 10
-    " specify local working directory
-    let g:ctrlp_working_path_mode = 'ra'
-    " scan dot files and folders
-    let g:ctrlp_show_hidden = 1
-    " ignore intermediates, version controlled files and media
-    let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
-
 Plugin 'scrooloose/nerdtree'
-    " ,n toggles nerd tree
-    :noremap ,n :NERDTreeToggle<cr>
-    " ,r goto directory of current file
-    :noremap ,r :NERDTreeFind<cr>
-    " show hidden files by default
-    let NERDTreeShowHidden=0
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'elzr/vim-json'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin '1995eaton/vim-better-javascript-completion'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'altercation/vim-colors-solarized'
 
+
+" experimental
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'marijnh/tern_for_vim'
+"Plugin 'Shutnik/jshint2.vim'
+  " let jshint2_save = 1
+  " let jshint2_close = 0
+"Plugin 'othree/javascript-libraries-syntax.vim'
+"Plugin 'othree/yajs.vim'
+"Plugin 'pangloss/vim-javascript'
+"Plugin 'kshenoy/vim-signature'
+"  let g:mustache_abbreviations=1
 "Plugin 'Raimondi/delimitMate'
 "    let g:delimitMate_expand_cr = 1
 "    let g:delimitMate_expand_space = 1
 "    imap <C-c> <CR><ESc>O
-
-Plugin 'scrooloose/syntastic'
-    let g:syntastic_javascript_checkers=['jshint']
-    let g:syntastic_check_on_open=1
-
-" Plugin 'Valloric/YouCompleteMe'
-"   let g:ycm_add_preview_to_completeopt=0
-"   let g:ycm_confirm_extra_conf=0
-"   set completeopt-=preview
 
 " required
 call vundle#end()
@@ -88,7 +67,7 @@ filetype plugin indent on
 syntax enable
 
 " set mapleader to comma
-let mapleader = ","
+let mapleader = "\<Space>"
 
 " set jj to escape
 imap jj <Esc>
@@ -150,7 +129,7 @@ set hidden
 " highlight current line
 set cursorline
 
-" enable completion 
+" enable completion
 set omnifunc=syntaxcomplete#Complete
 
 " cmd wrap turns on wordwrap
@@ -167,9 +146,6 @@ set term=xterm-256color
 set background=dark
 colorscheme solarized
 
-" distinguished
-"colorscheme distinguished
-
 
 
 """""""""" Tabs/Spaces
@@ -180,13 +156,13 @@ colorscheme solarized
 set expandtab
 
 " specify width of a tab character
-set tabstop=4
+set tabstop=2
 
 " set number of spaces to use for each step of indent e.g. << or >> in normal mode
-set shiftwidth=4
+set shiftwidth=2
 
 " make tab and backspace in insert mode behave the same as indent commands in normal mode
-set softtabstop=4
+set softtabstop=2
 
 " round indent to multiple of shiftwidth
 set shiftround
@@ -252,7 +228,8 @@ nmap ;u :source ~/.vimrc<CR>
 " ,l to display hidden characters
 " http://vimcasts.org/episodes/show-invisibles/
 nmap <leader>l :set list!<CR>
-set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+" set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+set listchars=tab:▸\ ,eol:¬
 
 " quick opens
 cno $h e ~/
@@ -341,21 +318,92 @@ set statusline+=%#error#
 set statusline+=%{&paste?'[paste]':''}
 set statusline+=%*
 
-" switch to right side of status line 
-set statusline+=%=      
+" switch to right side of status line
+set statusline+=%=
 
 " cursor column
-set statusline+=%c,     
+set statusline+=%c,
 
 " cursor line/total lines
-set statusline+=%l/%L   
+set statusline+=%l/%L
+
+
+
+"""""""""" Plugin Config
+
+
+
+""" config for 'kien/ctrlp.vim'
+
+" files
+nnoremap <leader>f :CtrlP<CR>
+
+" buffers
+nnoremap <leader>b :CtrlPBuffer<CR>
+
+" recents
+nnoremap <leader>m :CtrlPMRUFiles<CR>
+
+" place match window at the bottom
+let g:ctrlp_match_window_bottom = 1
+
+" set max height of the match window
+let g:ctrlp_max_height = 10
+
+" specify local working directory
+let g:ctrlp_working_path_mode = 'ra'
+
+" scan dot files and folders
+let g:ctrlp_show_hidden = 1
+
+" ignore intermediates, version controlled files and media
+let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py|node_modules'
+
+
+
+""" config for 'scrooloose/nerdtree'
+
+" ,n toggles nerd tree
+:noremap ,n :NERDTreeToggle<cr>
+
+" ,r goto directory of current file
+:noremap ,r :NERDTreeFind<cr>
+
+" show hidden files by default
+let NERDTreeShowHidden=0
+
+
+""" config for 'scrooloose/syntastic'
+
+let g:syntastic_javascript_checkers=['jshint']
+
+let g:syntastic_filetype_map = { 'html.handlebars': 'handlebars' }
+
+" from https://github.com/scrooloose/syntastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
+""" config for 'Valloric/YouCompleteMe'
+"let g:ycm_add_preview_to_completeopt=0
+"let g:ycm_confirm_extra_conf=0
+"set completeopt-=preview
+
+
+""" config for Plugin 'marijnh/tern_for_vim'
+" let g:tern_map_keys=1
+" let g:tern_show_argument_hints='on_hold'
 
 
 
 """""""""" Shitlist
 
 " force sudo for open file
-cmap w!! w !sudo tee % >/dev/null
+" cmap w!! w !sudo tee % >/dev/null
 
 " do not show tabs on html and xml files
 " autocmd filetype html,xml set listchars-=tab:>.
