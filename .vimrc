@@ -23,6 +23,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/vundle'
+
 " keepers
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
@@ -30,27 +31,30 @@ Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'elzr/vim-json'
-Plugin 'jelera/vim-javascript-syntax'
+Plugin 'othree/html5.vim'
+
+"Plugin 'jelera/vim-javascript-syntax'
+"Plugin 'pangloss/vim-javascript'
+"Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'othree/yajs.vim'
+
 Plugin '1995eaton/vim-better-javascript-completion'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'altercation/vim-colors-solarized'
 
 " experimental
-"Plugin 'Valloric/YouCompleteMe'
-"Plugin 'marijnh/tern_for_vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'marijnh/tern_for_vim'
 "Plugin 'Shutnik/jshint2.vim'
   " let jshint2_save = 1
   " let jshint2_close = 0
-"Plugin 'othree/javascript-libraries-syntax.vim'
-"Plugin 'othree/yajs.vim'
-"Plugin 'pangloss/vim-javascript'
 "Plugin 'kshenoy/vim-signature'
-"  let g:mustache_abbreviations=1
 "Plugin 'Raimondi/delimitMate'
 "    let g:delimitMate_expand_cr = 1
 "    let g:delimitMate_expand_space = 1
 "    imap <C-c> <CR><ESc>O
+"Plugin 'yosiat/oceanic-next-vim'
 
 " required
 call vundle#end()
@@ -141,9 +145,11 @@ set bs=2
 """""""""" Colours
 
 " solarized
-set term=xterm-256color
+"set term=xterm-256color
+let g:solarized_termcolors=16
 set background=dark
 colorscheme solarized
+
 
 
 
@@ -285,6 +291,9 @@ function! <SID>StripTrailingWhitespaces()
 endfunction
 nnoremap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
 
+" copy out of vim 
+set clipboard=unnamed
+
 "nnoremap <F5> :%s/\s\+$//e<CR>
 
 
@@ -378,6 +387,8 @@ let g:syntastic_javascript_checkers=['jshint']
 
 let g:syntastic_filetype_map = { 'html.handlebars': 'handlebars' }
 
+let g:syntastic_html_tidy_exec = 'tidy5'
+
 " from https://github.com/scrooloose/syntastic
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -396,23 +407,3 @@ let g:syntastic_filetype_map = { 'html.handlebars': 'handlebars' }
 """ config for Plugin 'marijnh/tern_for_vim'
 " let g:tern_map_keys=1
 " let g:tern_show_argument_hints='on_hold'
-
-
-
-"""""""""" Shitlist
-
-" force sudo for open file
-" cmap w!! w !sudo tee % >/dev/null
-
-" do not show tabs on html and xml files
-" autocmd filetype html,xml set listchars-=tab:>.
-
-" do not add comment prefix when I enter or o/O on a comment line
-" autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-"if has("autocmd")
-"  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-"  autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-"  autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-"  autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
-"endif
