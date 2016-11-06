@@ -1,21 +1,10 @@
 " drlaj .vimrc
 
-"" Vundle
-"" General
-"" Colours
-"" Tabs/Spaces
-"" Search/Matching
-"" Spelling
-"" Shortcuts
-"" Statusline
-"" Plugin Config
-"" Hitlist
-
 " be iMproved, required
 set nocompatible
 filetype off
 
-"""""""""" Vundle
+"----- Vundle -----"
 
 " set the runtime path to include Vundle and intialise
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -25,36 +14,20 @@ call vundle#begin()
 Plugin 'gmarik/vundle'
 
 " keepers
-Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
+Plugin 'junegunn/seoul256.vim'
+Plugin 'pangloss/vim-javascript'
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'elzr/vim-json'
 Plugin 'othree/html5.vim'
+Plugin 'elzr/vim-json'
 
-"Plugin 'jelera/vim-javascript-syntax'
-"Plugin 'pangloss/vim-javascript'
-"Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'othree/yajs.vim'
-
-Plugin '1995eaton/vim-better-javascript-completion'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'altercation/vim-colors-solarized'
-
-" experimental
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'marijnh/tern_for_vim'
-"Plugin 'Shutnik/jshint2.vim'
-  " let jshint2_save = 1
-  " let jshint2_close = 0
-"Plugin 'kshenoy/vim-signature'
-"Plugin 'Raimondi/delimitMate'
-"    let g:delimitMate_expand_cr = 1
-"    let g:delimitMate_expand_space = 1
-"    imap <C-c> <CR><ESc>O
-"Plugin 'yosiat/oceanic-next-vim'
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'tpope/vim-repeat'
+"Plugin '1995eaton/vim-better-javascript-completion'
+"Plugin 'christoomey/vim-tmux-navigator'
+"Plugin 'altercation/vim-colors-solarized'
 
 " required
 call vundle#end()
@@ -62,9 +35,7 @@ call vundle#end()
 " required
 filetype plugin indent on
 
-
-
-"""""""""" General
+"----- GENERAL -----"
 
 " turn on syntax highlighting
 syntax enable
@@ -82,19 +53,16 @@ set history=1000
 set visualbell
 
 " turn on line numbering
-set nu
+set number
 
-" show available command completions
+" show partial command
 set showcmd
 
 " always show a status line
 set laststatus=2
 
-" set height of the command-line
-set ch=1
-
-" set minimal number of lines to scroll when the cursor gets off the screen
-set so=7
+" set minimal number of lines to scroll when the cursor goes off the screen
+set so=10
 
 " CTRL-e and CTRL-y each page 10 lines
 :nnoremap <C-e> 10<C-e>
@@ -107,66 +75,74 @@ set autoindent
 set smartindent
 
 " set UTF-8 as the standard encoding
-set enc=utf-8
+set encoding=utf-8
 
-" turn on autoread
+" automatically read the file again when changes are detected outside vim
 set autoread
 
-" simple delete and backspace
+" x deletes
 vnoremap x "_x
+
+" X backspaces
 vnoremap X "_X
+
+" backspace is dumb and behaves as expected
+set backspace=2
 
 " set shell
 set shell=zsh
 
-" set change marker
-set cpoptions+=$
-
-" turn off backup and swap files
+" no backup files
 set nobackup
+
+" no swap files
 set noswapfile
 
 " easy switching from unsaved hidden buffers
 set hidden
 
-" highlight current line
-set cursorline
-
 " enable completion
 set omnifunc=syntaxcomplete#Complete
+
+" set change marker
+set cpoptions+=$
 
 " cmd wrap turns on wordwrap
 " http://vimcasts.org/episodes/soft-wrapping-text/
 command! -nargs=* Wrap set wrap linebreak nolist
 
-" backspace behaves as expected
-set bs=2
+" customise hidden characters
+set listchars=eol:¬,tab:>-,trail:~,extends:>,precedes:<
 
-"""""""""" Colours
+" copy out of vim
+set clipboard=unnamed
 
-" solarized
-"set term=xterm-256color
-let g:solarized_termcolors=16
-set background=dark
-colorscheme solarized
+" unix cmdline modifiers work on the vim cmd line
+cmap <C-A> <Home>
+cmap <C-E> <End>
+cmap <C-F> <Right>
+cmap <C-B> <Left>
 
+" set keystroke to quickly toggle paste mode
+set pastetoggle=<F9>
 
+" my eyes!
+colorscheme seoul256
 
+"----- TABS/SPACES -----"
 
-"""""""""" Tabs/Spaces
+" great explanation here: http://vimcasts.org/episodes/tabs-and-spaces/
 
-" http://vimcasts.org/episodes/tabs-and-spaces/
-
-" expand tabs into spaces
+" turn tabs into spaces
 set expandtab
 
 " specify width of a tab character
 set tabstop=2
 
-" set number of spaces to use for each step of indent e.g. << or >> in normal mode
+" set number of spaces to use for each step of indent 
 set shiftwidth=2
 
-" make tab and backspace in insert mode behave the same as indent commands in normal mode
+" make tab/backspace in insert mode behave the same as indent commands in normal mode
 set softtabstop=2
 
 " round indent to multiple of shiftwidth
@@ -175,54 +151,49 @@ set shiftround
 " insert tabs on the start of a line according to shiftwidth
 set smarttab
 
+"----- SEARCH/MATCHING -----"
 
-
-"""""""""" Search/Matching
-
-" move the cursor to the matched string
+" move the cursor to the matched string as you type
 set incsearch
 
 " highlight all matches
 set hlsearch
 
+" matching ignores case
+set ignorecase
+
+" matching listens to case when search pattern specifies it
+set smartcase
+
 " hitting enter clears search
 noremap <CR> :nohlsearch<CR>
 
-" keep searches in the middle
+" keep matches in the middle
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-" set search to ignore case
-set ignorecase
-
-" override ignorecase when the pattern contains upper case characters
-set smartcase
-
-
-
-"""""""""" Spelling
+"----- SPELLING -----"
 
 " pressing ,ss will toggle spell checking
-map <leader>ss :setlocal spell!<CR>
+nmap <leader>ss :setlocal spell!<CR>
 
-" goto next error
-map <leader>sn ]s
+" goto next spelling error
+nmap <leader>sn ]s
 
-" goto previous error
-map <leader>sp [s
+" goto previous spelling error
+nmap <leader>sp [s
 
-" add the word to the dictionary
-map <leader>sa zg
+" add the highlighted word to the dictionary
+nmap <leader>sa zg
 
-" show suggestions
-map <leader>s? z=
+" show spelling suggestions
+nmap <leader>s? z=
 
-" hide the default mode text
-set noshowmode
+"----- SHORTCUTS -----"
 
-
-
-"""""""""" Shortcuts
+" natural line movements when text is wrapped
+nmap j gj
+nmap k gk
 
 " quickly edit vimrc
 nmap ;v :e ~/.vimrc<CR>
@@ -230,77 +201,35 @@ nmap ;v :e ~/.vimrc<CR>
 " quickly source vimrc
 nmap ;u :source ~/.vimrc<CR>
 
-" ,l to display hidden characters
-" http://vimcasts.org/episodes/show-invisibles/
+" quickly toggle hidden characters
 nmap <leader>l :set list!<CR>
-" set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
-set listchars=tab:▸\ ,eol:¬
 
-" quick opens
-cno $h e ~/
-cno $d e ~/Desktop/
-cno $$ e ./
-map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
+" quickly move to the current working directory
+nmap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
-" ,cd changes to the current working directory
-noremap ,cd :cd %:p:h<CR>:pwd<CR>
+" quickly list buffers
+nmap <C-b> :ls<cr>
 
-" quick buffer movements
-map <right> :bn<CR>
-map <C-n> :bn<CR>
-map <left> :bp<CR>
-map <C-p> :bp<CR>
+" quickly move between buffers
+nmap <right> :bn<CR>
+nmap <left> :bp<CR>
 
-" unix cmdline modifiers work on the vim cmd line
-cnoremap <C-A> <Home>
-cnoremap <C-E> <End>
-cnoremap <C-F> <Right>
-cnoremap <C-B> <Left>
+" quickly move between windows
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
 
-" move a line of text using CMD+[jk]
-nmap <D-j> mz:m+<CR>`z
-nmap <D-k> mz:m-2<CR>`z
-vmap <D-j> :m'>+<CR>`<my`>mzgv`yo`z
-vmap <D-k> :m'<-2<CR>`>my`<mzgv`yo`z
+" quickly open home directory
+cmap $h e ~/
 
-" natural line movements when wrapped
-nnoremap j gj
-nnoremap k gk
+" quickly open desktop directory
+cmap $d e ~/Desktop/
 
-" streamline window movement
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+" quickly open current directory
+cmap $$ e ./
 
-" shortcut list buffers
-map <C-b> :ls<cr>
-
-" Remove trailing whitespace from all lines
-" http://vimcasts.org/episodes/tidying-whitespace/
-function! <SID>StripTrailingWhitespaces()
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    let @/=_s
-    call cursor(l, c)
-endfunction
-nnoremap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
-
-" copy out of vim 
-set clipboard=unnamed
-
-"nnoremap <F5> :%s/\s\+$//e<CR>
-
-
-
-"""""""""" Statusline
-
-"set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+"----- STATUSLINE -----"
 
 set statusline =%#identifier#
 
@@ -330,18 +259,25 @@ set statusline+=%*
 set statusline+=%=
 
 " cursor column
-set statusline+=%c,
+set statusline+=%c-
 
 " cursor line/total lines
 set statusline+=%l/%L
 
+"----- PLUGIN CONFIG -----"
 
+""""" nerdtree
 
-"""""""""" Plugin Config
+" ,n toggles nerd tree
+:noremap ,n :NERDTreeToggle<cr>
 
+" ,r goto directory of current file
+:noremap ,r :NERDTreeFind<cr>
 
+" show hidden files by default
+let NERDTreeShowHidden=0
 
-""" config for 'kien/ctrlp.vim'
+""""" ctrlp
 
 " files
 nnoremap <leader>f :CtrlP<CR>
@@ -367,43 +303,29 @@ let g:ctrlp_show_hidden = 1
 " ignore intermediates, version controlled files and media
 let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py|node_modules'
 
+""""" syntastic
 
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-""" config for 'scrooloose/nerdtree'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
 
-" ,n toggles nerd tree
-:noremap ,n :NERDTreeToggle<cr>
+"----- HELPERS -----"
 
-" ,r goto directory of current file
-:noremap ,r :NERDTreeFind<cr>
+" remove trailing whitespace from all lines
+function! <SID>StripTrailingWhitespaces()
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    let @/=_s
+    call cursor(l, c)
+endfunction
 
-" show hidden files by default
-let NERDTreeShowHidden=0
-
-
-""" config for 'scrooloose/syntastic'
-
-let g:syntastic_javascript_checkers=['jshint']
-
-let g:syntastic_filetype_map = { 'html.handlebars': 'handlebars' }
-
-let g:syntastic_html_tidy_exec = 'tidy5'
-
-" from https://github.com/scrooloose/syntastic
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-
-""" config for 'Valloric/YouCompleteMe'
-"let g:ycm_add_preview_to_completeopt=0
-"let g:ycm_confirm_extra_conf=0
-"set completeopt-=preview
-
-
-""" config for Plugin 'marijnh/tern_for_vim'
-" let g:tern_map_keys=1
-" let g:tern_show_argument_hints='on_hold'
+nmap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>

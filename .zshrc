@@ -110,5 +110,7 @@ setopt HIST_FIND_NO_DUPS
 # add mongo to path
 export PATH=/usr/local/mongodb/bin:$PATH
 
-# add heroku to path
-export PATH="/usr/local/heroku/bin:$PATH"
+# set path for GO
+export GOROOT=/usr/local/opt/go/libexec
+export GOPATH=$HOME/.go
+export PATH=$PATH:$GOPATH/bin
