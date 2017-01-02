@@ -17,17 +17,17 @@ Plugin 'gmarik/vundle'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
-Plugin 'junegunn/seoul256.vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'othree/yajs.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'othree/html5.vim'
 Plugin 'elzr/vim-json'
+Plugin 'mileszs/ack.vim'
+Plugin 'christoomey/vim-tmux-navigator'
 
 "Plugin 'Valloric/YouCompleteMe'
 "Plugin 'tpope/vim-repeat'
 "Plugin '1995eaton/vim-better-javascript-completion'
-"Plugin 'christoomey/vim-tmux-navigator'
-"Plugin 'altercation/vim-colors-solarized'
 
 " required
 call vundle#end()
@@ -57,6 +57,9 @@ set number
 
 " show partial command
 set showcmd
+
+" hide --INSERT--
+set noshowmode
 
 " always show a status line
 set laststatus=2
@@ -127,7 +130,8 @@ cmap <C-B> <Left>
 set pastetoggle=<F9>
 
 " my eyes!
-colorscheme seoul256
+colorscheme Tomorrow-Night
+set t_Co=256
 
 "----- TABS/SPACES -----"
 
@@ -139,7 +143,7 @@ set expandtab
 " specify width of a tab character
 set tabstop=2
 
-" set number of spaces to use for each step of indent 
+" set number of spaces to use for each step of indent
 set shiftwidth=2
 
 " make tab/backspace in insert mode behave the same as indent commands in normal mode
@@ -329,3 +333,7 @@ function! <SID>StripTrailingWhitespaces()
 endfunction
 
 nmap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
+
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
