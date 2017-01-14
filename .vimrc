@@ -17,13 +17,16 @@ Plugin 'gmarik/vundle'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
-Plugin 'pangloss/vim-javascript'
-Plugin 'othree/yajs.vim'
+
 Plugin 'tpope/vim-surround'
 Plugin 'othree/html5.vim'
 Plugin 'elzr/vim-json'
 Plugin 'mileszs/ack.vim'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'chriskempson/base16-vim'
+
+"Plugin 'othree/yajs.vim'
+" Plugin 'pangloss/vim-javascript' " breaks html data-attributes
 
 "Plugin 'Valloric/YouCompleteMe'
 "Plugin 'tpope/vim-repeat'
@@ -130,8 +133,11 @@ cmap <C-B> <Left>
 set pastetoggle=<F9>
 
 " my eyes!
-colorscheme Tomorrow-Night
-set t_Co=256
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+colorscheme base16-tomorrow-night
 
 "----- TABS/SPACES -----"
 
@@ -337,3 +343,17 @@ nmap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
+
+" The Silver Searcher
+if executable('ag')
+	" Use ag over grep
+	set grepprg=ag\ --nogroup\ --nocolor
+
+	" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+	" ag is fast enough that CtrlP doesn't need to cache
+	let g:ctrlp_use_caching = 0
+endif
+
+"autocmd BufNewFile,BufRead *.html set syntax=html
