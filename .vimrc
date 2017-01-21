@@ -1,319 +1,214 @@
 " drlaj .vimrc
+" Don't put any lines in your vimrc that you don't understand
 
-" be iMproved, required
+"==============================================================================
+" VIM-PLUG - https://github.com/junegunn/vim-plug
+"==============================================================================
+silent! if plug#begin('~/.vim/plugged')
+
+Plug 'chriskempson/base16-vim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'elzr/vim-json'
+Plug 'kien/ctrlp.vim'
+Plug 'othree/html5.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'junegunn/vim-slash'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+
+call plug#end()
+endif
+
+"==============================================================================
+" BASIC SETTINGS
+"==============================================================================
+
+let mapleader       = "\<Space>"
+let maplocalleader  = "\<Space>"
+
 set nocompatible
-filetype off
-
-"----- Vundle -----"
-
-" set the runtime path to include Vundle and intialise
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/vundle'
-
-" keepers
-Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/syntastic'
-
-Plugin 'tpope/vim-surround'
-Plugin 'othree/html5.vim'
-Plugin 'elzr/vim-json'
-Plugin 'mileszs/ack.vim'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'chriskempson/base16-vim'
-
-"Plugin 'othree/yajs.vim'
-" Plugin 'pangloss/vim-javascript' " breaks html data-attributes
-
-"Plugin 'Valloric/YouCompleteMe'
-"Plugin 'tpope/vim-repeat'
-"Plugin '1995eaton/vim-better-javascript-completion'
-
-" required
-call vundle#end()
-
-" required
-filetype plugin indent on
-
-"----- GENERAL -----"
-
-" turn on syntax highlighting
-syntax enable
-
-" set mapleader to comma
-let mapleader = "\<Space>"
-
-" set jj to escape
-imap jj <Esc>
-
-" increase vim history size
-set history=1000
-
-" no sounds
-set visualbell
-
-" turn on line numbering
-set number
-
-" show partial command
-set showcmd
-
-" hide --INSERT--
-set noshowmode
-
-" always show a status line
-set laststatus=2
-
-" set minimal number of lines to scroll when the cursor goes off the screen
-set so=10
-
-" CTRL-e and CTRL-y each page 10 lines
-:nnoremap <C-e> 10<C-e>
-:nnoremap <C-y> 10<C-y>
-
-" copy indent from current line when starting a new line
+set nu
 set autoindent
-
-" perform smart indenting when starting a new line
 set smartindent
-
-" set UTF-8 as the standard encoding
+set visualbell
+set showcmd
+set laststatus=2
 set encoding=utf-8
-
-" automatically read the file again when changes are detected outside vim
 set autoread
-
-" x deletes
-vnoremap x "_x
-
-" X backspaces
-vnoremap X "_X
-
-" backspace is dumb and behaves as expected
 set backspace=2
-
-" set shell
+set lazyredraw
+set shortmess=aIT
 set shell=zsh
-
-" no backup files
 set nobackup
-
-" no swap files
 set noswapfile
-
-" easy switching from unsaved hidden buffers
 set hidden
-
-" enable completion
-set omnifunc=syntaxcomplete#Complete
-
-" set change marker
 set cpoptions+=$
-
-" cmd wrap turns on wordwrap
-" http://vimcasts.org/episodes/soft-wrapping-text/
-command! -nargs=* Wrap set wrap linebreak nolist
-
-" customise hidden characters
-set listchars=eol:¬,tab:>-,trail:~,extends:>,precedes:<
-
-" copy out of vim
+set listchars=tab:▸\ ,eol:¬,trail:~,extends:>,precedes:<
 set clipboard=unnamed
-
-" unix cmdline modifiers work on the vim cmd line
-cmap <C-A> <Home>
-cmap <C-E> <End>
-cmap <C-F> <Right>
-cmap <C-B> <Left>
-
-" set keystroke to quickly toggle paste mode
 set pastetoggle=<F9>
+set expandtab
+set smarttab
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set shiftround
+set incsearch
+set ignorecase
+set smartcase
+set omnifunc=syntaxcomplete#Complete
+set synmaxcol=1000
+set nostartofline
+set textwidth=0
+set colorcolumn=80
+set wildmenu
 
-" my eyes!
+" Status line config
+set statusline=
+set statusline+=[%n]                    " buffer number
+set statusline+=\ [%F]                  " full path to the current file
+set statusline+=%*                      " restore normal highlight
+set statusline+=\ %m                    " readonly flag
+set statusline+=\ %r                    " modified flag
+set statusline+=%#error#
+set statusline+=%{&paste?'[paste]':''}  " paste flag
+set statusline+=%*                      " restore normal highlight
+set statusline+=%=                      " switch to the right side
+set statusline+=%l                      " current line
+set statusline+=/                       " separator
+set statusline+=%L                      " total line numbers
+
+" Nice colors via base16 - http://chriskempson.com/projects/base16
 if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
+	let base16colorspace=256
+	source ~/.vimrc_background
 endif
 colorscheme base16-tomorrow-night
 
-"----- TABS/SPACES -----"
+" Fast searching via The Silver Searcher - http://geoff.greer.fm/ag
+if executable('ag')
+  " Use ag for grepping
+  set grepprg=ag\ --nogroup\ --nocolor
 
-" great explanation here: http://vimcasts.org/episodes/tabs-and-spaces/
+	" Ctrlp can use ag 
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-" turn tabs into spaces
-set expandtab
+  " Ctrlp does not have to cache when using ag
+  let g:ctrlp_use_caching = 0
+endif
 
-" specify width of a tab character
-set tabstop=2
+" Remove trailing white spaces from all lines
+function! <SID>RemoveTrailingWhitespaceFromAllLines()
+  let _s=@/
+	let l = line(".")
+	let c = col(".")
+	%s/\s\+$//e
+	let @/=_s
+	call cursor(l, c)
+endfunction
+nnoremap <silent> <F5> :call <SID>RemoveTrailingWhitespaceFromAllLines()<CR>
 
-" set number of spaces to use for each step of indent
-set shiftwidth=2
+"==============================================================================
+" MAPPINGS
+"=============================================================================
 
-" make tab/backspace in insert mode behave the same as indent commands in normal mode
-set softtabstop=2
+" Quickly edit vimrc
+nnoremap ;v :e ~/.vimrc<CR>
 
-" round indent to multiple of shiftwidth
-set shiftround
+" Quickly source vimrc
+nnoremap ;u :source ~/.vimrc<CR>
 
-" insert tabs on the start of a line according to shiftwidth
-set smarttab
+" Quickly toggle hidden characters
+nnoremap <leader>l :set list!<CR>
 
-"----- SEARCH/MATCHING -----"
+" Quickly change to current directory
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
-" move the cursor to the matched string as you type
-set incsearch
+" Quickly list buffers
+nnoremap <C-b> :ls<CR>
 
-" highlight all matches
-set hlsearch
+" Quickly close the quickfix window
+nnoremap <C-c> :cclose<CR>
 
-" matching ignores case
-set ignorecase
+" Quickly move between windows
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
-" matching listens to case when search pattern specifies it
-set smartcase
+" ctrl-e and ctrl-y each page 10 lines
+nnoremap <C-e> 10<C-e>
+nnoremap <C-y> 10<C-y>
 
-" hitting enter clears search
-noremap <CR> :nohlsearch<CR>
+" Set jj to escape
+inoremap jj <Esc>
 
-" keep matches in the middle
-nnoremap n nzzzv
-nnoremap N Nzzzv
+" Simple line movements when text is wrapped
+nnoremap j gj
+nnoremap k gk
 
-"----- SPELLING -----"
+" UNIX cmd line modifiers work on vim cmd line
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-b> <Left>
+" persist ctrl-f to switch from commandline to commandline window
+cnoremap <expr> <C-f> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
 
-" pressing ,ss will toggle spell checking
-nmap <leader>ss :setlocal spell!<CR>
+" K greps the word under the cursor
+nnoremap K :grep! --word-regexp "<C-r><C-w>"<CR>:cw<CR> " good!
 
-" goto next spelling error
-nmap <leader>sn ]s
+" Place the current match at the center of the window
+nnoremap <plug>(slash-after) zz
 
-" goto previous spelling error
-nmap <leader>sp [s
+" Simplify opening files, via http://vimcasts.org/episodes/the-edit-command/
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<CR>
+map <leader>ew :e %%
+map <leader>es :sp %%
+map <leader>ev :vsp %%
+map <leader>et :tabe %%
 
-" add the highlighted word to the dictionary
-nmap <leader>sa zg
+"==============================================================================
+" PLUGINS
+"==============================================================================
 
-" show spelling suggestions
-nmap <leader>s? z=
-
-"----- SHORTCUTS -----"
-
-" natural line movements when text is wrapped
-nmap j gj
-nmap k gk
-
-" quickly edit vimrc
-nmap ;v :e ~/.vimrc<CR>
-
-" quickly source vimrc
-nmap ;u :source ~/.vimrc<CR>
-
-" quickly toggle hidden characters
-nmap <leader>l :set list!<CR>
-
-" quickly move to the current working directory
-nmap <leader>cd :cd %:p:h<CR>:pwd<CR>
-
-" quickly list buffers
-nmap <C-b> :ls<cr>
-
-" quickly move between buffers
-nmap <right> :bn<CR>
-nmap <left> :bp<CR>
-
-" quickly move between windows
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
-
-" quickly open home directory
-cmap $h e ~/
-
-" quickly open desktop directory
-cmap $d e ~/Desktop/
-
-" quickly open current directory
-cmap $$ e ./
-
-"----- STATUSLINE -----"
-
-set statusline =%#identifier#
-
-" tail of the file name
-set statusline+=[%t]
-set statusline+=%*
-
-" filetype
-set statusline+=%y
-
-" read-only flag
-set statusline+=%#identifier#
-set statusline+=%r
-set statusline+=%*
-
-" modified flag
-set statusline+=%#identifier#
-set statusline+=%m
-set statusline+=%*
-
-" paste flag
-set statusline+=%#error#
-set statusline+=%{&paste?'[paste]':''}
-set statusline+=%*
-
-" switch to right side of status line
-set statusline+=%=
-
-" cursor column
-set statusline+=%c-
-
-" cursor line/total lines
-set statusline+=%l/%L
-
-"----- PLUGIN CONFIG -----"
-
-""""" nerdtree
+"------------------------------------------------------------------------------
+" Nerdtree
+"------------------------------------------------------------------------------
 
 " ,n toggles nerd tree
-:noremap ,n :NERDTreeToggle<cr>
+:nnoremap ,n :NERDTreeToggle<CR>
 
 " ,r goto directory of current file
-:noremap ,r :NERDTreeFind<cr>
+:nnoremap ,r :NERDTreeFind<CR>
 
-" show hidden files by default
-let NERDTreeShowHidden=0
+"------------------------------------------------------------------------------
+" Ctrlp
+"------------------------------------------------------------------------------
 
-""""" ctrlp
-
-" files
+" Search files
 nnoremap <leader>f :CtrlP<CR>
 
-" buffers
+" Search buffers
 nnoremap <leader>b :CtrlPBuffer<CR>
 
-" recents
+" Search recent files
 nnoremap <leader>m :CtrlPMRUFiles<CR>
 
-" place match window at the bottom
-let g:ctrlp_match_window_bottom = 1
+" Ctrlp window config
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 
-" set max height of the match window
-let g:ctrlp_max_height = 10
-
-" specify local working directory
+" Ctrlp working directory
 let g:ctrlp_working_path_mode = 'ra'
 
-" scan dot files and folders
+" Ctrlp to search hidden files and folders
 let g:ctrlp_show_hidden = 1
 
-" ignore intermediates, version controlled files and media
+" Ctrlp exclude list
 let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py|node_modules'
 
-""""" syntastic
+"------------------------------------------------------------------------------
+" Syntastic
+"------------------------------------------------------------------------------
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -326,34 +221,3 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
 
-"----- HELPERS -----"
-
-" remove trailing whitespace from all lines
-function! <SID>StripTrailingWhitespaces()
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    let @/=_s
-    call cursor(l, c)
-endfunction
-
-nmap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
-
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
-" The Silver Searcher
-if executable('ag')
-	" Use ag over grep
-	set grepprg=ag\ --nogroup\ --nocolor
-
-	" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-	" ag is fast enough that CtrlP doesn't need to cache
-	let g:ctrlp_use_caching = 0
-endif
-
-"autocmd BufNewFile,BufRead *.html set syntax=html
