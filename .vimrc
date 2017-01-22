@@ -24,6 +24,10 @@ endif
 " BASIC SETTINGS
 "==============================================================================
 
+augroup vimrc
+  autocmd!
+augroup END
+
 let mapleader       = "\<Space>"
 let maplocalleader  = "\<Space>"
 
@@ -107,6 +111,15 @@ function! <SID>RemoveTrailingWhitespaceFromAllLines()
 	call cursor(l, c)
 endfunction
 nnoremap <silent> <F5> :call <SID>RemoveTrailingWhitespaceFromAllLines()<CR>
+
+" Quickly close help buffers
+function! s:helptab()
+  if &buftype == 'help'
+    wincmd T
+    nnoremap <buffer> q :q<cr>
+  endif
+endfunction
+autocmd vimrc BufEnter *.txt call s:helptab()
 
 "==============================================================================
 " MAPPINGS
@@ -220,4 +233,3 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
-
