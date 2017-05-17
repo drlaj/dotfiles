@@ -16,6 +16,8 @@ Plug 'scrooloose/syntastic'
 Plug 'junegunn/vim-slash'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 
 call plug#end()
 endif
@@ -70,7 +72,8 @@ set wildmenu
 " Status line config
 set statusline=
 set statusline+=[%n]                    " buffer number
-set statusline+=\ [%F]                  " full path to the current file
+set statusline+=%#error#                " paste flag
+set statusline+=\[%F]                   " full path to the current file
 set statusline+=%*                      " restore normal highlight
 set statusline+=\ %m                    " readonly flag
 set statusline+=\ %r                    " modified flag
@@ -194,6 +197,9 @@ map <leader>et :tabe %%
 " ,r goto directory of current file
 :nnoremap ,r :NERDTreeFind<CR>
 
+" do not collapse single folder nodes
+let NERDTreeCascadeSingleChildDir=0
+
 "------------------------------------------------------------------------------
 " Ctrlp
 "------------------------------------------------------------------------------
@@ -233,3 +239,9 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
+
+"------------------------------------------------------------------------------
+" JSX
+"------------------------------------------------------------------------------
+
+let g:jsx_ext_required = 0

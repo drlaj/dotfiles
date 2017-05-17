@@ -39,6 +39,8 @@ alias vi='vim'
 # Force rm * to ask 
 set rmstar
 
+export PATH="$PATH:`yarn global bin`"
+
 #-------------------------------------------------------------------------------
 # Zsh completion
 #-------------------------------------------------------------------------------
@@ -95,3 +97,12 @@ prompt pure
 # Nice colors via Base16
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+#==============================================================================
+# HELPERS
+#==============================================================================
+
+# Move last downloaded file to current directory
+ldf() {
+  mv ~/Downloads/*(mh-3[1]) .
+}
