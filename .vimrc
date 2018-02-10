@@ -51,7 +51,9 @@ set noswapfile
 set hidden
 set cpoptions+=$
 set listchars=tab:▸\ ,eol:¬,trail:~,extends:>,precedes:<
-set clipboard=unnamed
+if $TMUX == ''
+  set clipboard+=unnamed
+endif
 set pastetoggle=<F9>
 set expandtab
 set smarttab
