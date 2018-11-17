@@ -39,12 +39,6 @@ set rmstar
 #export PATH="$PATH:`yarn global bin`" this slowed startup so replaced with:
 export PATH="$PATH:/user/local/bin"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/drlaj/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/drlaj/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/drlaj/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/drlaj/google-cloud-sdk/completion.zsh.inc'; fi
-
 #-------------------------------------------------------------------------------
 # Zsh completion
 #-------------------------------------------------------------------------------
@@ -111,14 +105,7 @@ ldf() {
   mv ~/Downloads/*(mh-3[1]) .
 }
 
-# nvm init adds seconds to terminal loading
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-#[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# so lets defer init of nvm until nvm, node or a node-dependent command is
-# run. Ensure this block is only run once if .bashrc gets sourced multiple times
-# by checking whether __init_nvm is a function.
+# Prevent nvm slowing down terminal loads 
 if [ -s "$HOME/.nvm/nvm.sh" ] && [ ! "$(whence -w __init_nvm)" = function ]; then
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
@@ -131,3 +118,9 @@ if [ -s "$HOME/.nvm/nvm.sh" ] && [ ! "$(whence -w __init_nvm)" = function ]; the
   }
   for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/drlaj/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/drlaj/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/drlaj/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/drlaj/Downloads/google-cloud-sdk/completion.zsh.inc'; fi

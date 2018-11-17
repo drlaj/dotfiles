@@ -6,18 +6,20 @@
 "==============================================================================
 silent! if plug#begin('~/.vim/plugged')
 
+let g:ale_emit_conflict_warnings = 0
+
 Plug 'chriskempson/base16-vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'elzr/vim-json'
-Plug 'kien/ctrlp.vim'
-Plug 'othree/html5.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
 Plug 'junegunn/vim-slash'
+Plug 'kien/ctrlp.vim'
+Plug 'mxw/vim-jsx'
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+Plug 'w0rp/ale'
 
 call plug#end()
 endif
@@ -99,7 +101,7 @@ if executable('ag')
   " Use ag for grepping
   set grepprg=ag\ --nogroup\ --nocolor
 
-	" Ctrlp can use ag 
+	" Ctrlp can use ag
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
   " Ctrlp does not have to cache when using ag
@@ -228,22 +230,13 @@ let g:ctrlp_show_hidden = 1
 let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py|node_modules'
 
 "------------------------------------------------------------------------------
-" Syntastic
-"------------------------------------------------------------------------------
-
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
-
-"------------------------------------------------------------------------------
 " JSX
 "------------------------------------------------------------------------------
 
 let g:jsx_ext_required = 0
+
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\}
+
+let g:ale_fix_on_save = 1
