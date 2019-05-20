@@ -9,11 +9,12 @@ plugins=(git zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
+source ~/.bin/tmuxinator.zsh
+
 #==============================================================================
-# BASIC SETTINGS 
+# BASIC SETTINGS
 #==============================================================================
 
-# Aliases
 alias cd..='cd ..'
 alias cd.='cd ..'
 
@@ -28,15 +29,19 @@ alias x='exit'
 alias ls='ls -lG'
 alias la='ls -AG'
 
-# Use Vim
 export EDITOR=vim
 alias vim=/usr/local/bin/vim
 alias vi='vim'
 
-# Force rm * to ask 
+# use bat over cat
+alias cat='bat'
+
+# fast preview
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+
+# force rm * to ask
 set rmstar
 
-#export PATH="$PATH:`yarn global bin`" this slowed startup so replaced with:
 export PATH="$PATH:/user/local/bin"
 
 #-------------------------------------------------------------------------------
@@ -44,7 +49,7 @@ export PATH="$PATH:/user/local/bin"
 #-------------------------------------------------------------------------------
 
 zstyle ':completion:*' completer _expand _complete _approximate _ignored
-zstyle ':completion:*' list-dirs-first true 
+zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select interactive
 zstyle ':completion:*:descriptions' format '%B%d%b'
@@ -63,8 +68,8 @@ setopt NUMERIC_GLOB_SORT
 # Zsh history
 #-------------------------------------------------------------------------------
 
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=2500
+SAVEHIST=2500
 
 # Do not display duplicates of a line previously found
 setopt HIST_FIND_NO_DUPS
@@ -96,6 +101,14 @@ prompt pure
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
+# FZF config
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
+  source /usr/local/opt/fzf/shell/key-bindings.zsh
+  source /usr/local/opt/fzf/shell/completion.zsh
+fi
+
 #==============================================================================
 # HELPERS
 #==============================================================================
@@ -105,7 +118,7 @@ ldf() {
   mv ~/Downloads/*(mh-3[1]) .
 }
 
-# Prevent nvm slowing down terminal loads 
+# Prevent nvm slowing down terminal loads
 if [ -s "$HOME/.nvm/nvm.sh" ] && [ ! "$(whence -w __init_nvm)" = function ]; then
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
@@ -120,7 +133,7 @@ if [ -s "$HOME/.nvm/nvm.sh" ] && [ ! "$(whence -w __init_nvm)" = function ]; the
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/drlaj/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/drlaj/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/drlaj/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/drlaj/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/drlaj/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/drlaj/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/Users/drlaj/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/drlaj/google-cloud-sdk/completion.zsh.inc'; fi
