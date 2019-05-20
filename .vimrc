@@ -6,20 +6,22 @@
 "==============================================================================
 silent! if plug#begin('~/.vim/plugged')
 
-let g:ale_emit_conflict_warnings = 0
-
-Plug 'chriskempson/base16-vim'
+" Plug 'kien/ctrlp.vim'
+Plug '/usr/local/opt/fzf'
+Plug 'scrooloose/nerdtree'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'elzr/vim-json'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-surround'
 Plug 'junegunn/vim-slash'
-Plug 'kien/ctrlp.vim'
+Plug 'w0rp/ale'
+Plug 'elzr/vim-json'
 Plug 'mxw/vim-jsx'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'w0rp/ale'
+Plug 'mileszs/ack.vim'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'terryma/vim-multiple-cursors'
+Plug 'chriskempson/base16-vim'
 
 call plug#end()
 endif
@@ -70,7 +72,6 @@ set omnifunc=syntaxcomplete#Complete
 set synmaxcol=1000
 set nostartofline
 set textwidth=0
-set colorcolumn=80
 set wildmenu
 
 " Status line config
@@ -94,30 +95,21 @@ if filereadable(expand("~/.vimrc_background"))
 	let base16colorspace=256
 	source ~/.vimrc_background
 endif
-colorscheme base16-tomorrow-night
+colorscheme base16-default-dark
 
 " Fast searching via The Silver Searcher - http://geoff.greer.fm/ag
 if executable('ag')
   " Use ag for grepping
-  set grepprg=ag\ --nogroup\ --nocolor
+  " set grepprg=ag\ --nogroup\ --nocolor
+  "let g:ackprg = 'ag --nogroup --nocolor --column'"
+  " let g:ackprg = 'ag --vimgrep'
 
 	" Ctrlp can use ag
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
   " Ctrlp does not have to cache when using ag
-  let g:ctrlp_use_caching = 0
+  " let g:ctrlp_use_caching = 0
 endif
-
-" Remove trailing white spaces from all lines
-function! <SID>RemoveTrailingWhitespaceFromAllLines()
-  let _s=@/
-	let l = line(".")
-	let c = col(".")
-	%s/\s\+$//e
-	let @/=_s
-	call cursor(l, c)
-endfunction
-nnoremap <silent> <F5> :call <SID>RemoveTrailingWhitespaceFromAllLines()<CR>
 
 " Quickly close help buffers
 function! s:helptab()
@@ -171,11 +163,12 @@ nnoremap k gk
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
 cnoremap <C-b> <Left>
+
 " persist ctrl-f to switch from commandline to commandline window
 cnoremap <expr> <C-f> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
 
 " K greps the word under the cursor
-nnoremap K :grep! --word-regexp "<C-r><C-w>"<CR>:cw<CR> " good!
+nnoremap K :grep! --word-regexp "<C-r><C-w>"<CR>:cw<CR>
 
 " Place the current match at the center of the window
 nnoremap <plug>(slash-after) zz
@@ -187,12 +180,13 @@ map <leader>es :sp %%
 map <leader>ev :vsp %%
 map <leader>et :tabe %%
 
-"==============================================================================
-" PLUGINS
-"==============================================================================
+" Fix common typos
+map <silent> q: :q<Cr>
+map <silent> Q: :q<Cr>
+map <silent> :Q :q<Cr>
 
 "------------------------------------------------------------------------------
-" Nerdtree
+" NERDtree
 "------------------------------------------------------------------------------
 
 " ,n toggles nerd tree
@@ -208,35 +202,64 @@ let NERDTreeCascadeSingleChildDir=0
 " Ctrlp
 "------------------------------------------------------------------------------
 
-" Search files
-nnoremap <leader>f :CtrlP<CR>
+" Search files on space-f
+" nnoremap <leader>f :CtrlP<CR>
 
-" Search buffers
-nnoremap <leader>b :CtrlPBuffer<CR>
+" Search buffers on space-b
+" nnoremap <leader>b :CtrlPBuffer<CR>
 
-" Search recent files
-nnoremap <leader>m :CtrlPMRUFiles<CR>
+" Search recent files on space-m
+" nnoremap <leader>m :CtrlPMRUFiles<CR>
 
 " Ctrlp window config
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
+" let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 
 " Ctrlp working directory
-let g:ctrlp_working_path_mode = 'ra'
+" let g:ctrlp_working_path_mode = 'ra'
 
 " Ctrlp to search hidden files and folders
-let g:ctrlp_show_hidden = 1
+" let g:ctrlp_show_hidden = 1
 
 " Ctrlp exclude list
-let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py|node_modules'
+" let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+" Trying LeaderF instead of CTRL P
+noremap <Leader>m :LeaderfMru<cr>
 
 "------------------------------------------------------------------------------
-" JSX
+" ALE
 "------------------------------------------------------------------------------
-
-let g:jsx_ext_required = 0
 
 let g:ale_fixers = {
+\   '*': ['trim_whitespace'],
 \   'javascript': ['eslint'],
 \}
 
 let g:ale_fix_on_save = 1
+
+let g:ale_sign_column_always = 1
+
+let g:ale_completion_enabled = 1
+
+" ok for jsx can exist in JS files
+let g:jsx_ext_required = 0
+
+"------------------------------------------------------------------------------
+" FZF
+"------------------------------------------------------------------------------
+
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
