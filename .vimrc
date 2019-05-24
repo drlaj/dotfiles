@@ -22,6 +22,7 @@ Plug 'mileszs/ack.vim'
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'terryma/vim-multiple-cursors'
 Plug 'chriskempson/base16-vim'
+Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 endif
@@ -185,6 +186,8 @@ map <silent> q: :q<Cr>
 map <silent> Q: :q<Cr>
 map <silent> :Q :q<Cr>
 
+let g:loaded_ruby_provider = 1
+
 "------------------------------------------------------------------------------
 " NERDtree
 "------------------------------------------------------------------------------
@@ -232,7 +235,8 @@ noremap <Leader>m :LeaderfMru<cr>
 
 let g:ale_fixers = {
 \   '*': ['trim_whitespace'],
-\   'javascript': ['eslint'],
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
 \}
 
 let g:ale_fix_on_save = 1
@@ -243,6 +247,16 @@ let g:ale_completion_enabled = 1
 
 " ok for jsx can exist in JS files
 let g:jsx_ext_required = 0
+
+let g:ale_javascript_prettier_options = '--single-quote --trailing-comma'
+
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+highlight ALEErrorSign ctermbg=18 ctermfg=red
+highlight ALEWarningSign ctermbg=18 ctermfg=yellow
+
+nmap <silent> <leader>aj :ALENext<cr>
+nmap <silent> <leader>ak :ALEPrevious<cr>
 
 "------------------------------------------------------------------------------
 " FZF
@@ -263,3 +277,16 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
+
+
+
+"---
+" Display 256 cterm colors
+"---
+"let num = 255
+"while num >= 0
+"    exec 'hi col_'.num.' ctermbg='.num.' ctermfg=white'
+"    exec 'syn match col_'.num.' "ctermbg='.num.':...." containedIn=ALL'
+"    call append(0, 'ctermbg='.num.':....')
+"    let num = num - 1
+"endwhile
