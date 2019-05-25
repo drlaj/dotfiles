@@ -9,8 +9,6 @@ plugins=(git zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
-source ~/.bin/tmuxinator.zsh
-
 #==============================================================================
 # BASIC SETTINGS
 #==============================================================================
@@ -18,9 +16,9 @@ source ~/.bin/tmuxinator.zsh
 alias cd..='cd ..'
 alias cd.='cd ..'
 
-alias rm='rm -v -i'
-alias cp='cp -v -i'
-alias mv='mv -v -i'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 
 alias c='clear'
 alias h='history'
@@ -29,9 +27,9 @@ alias x='exit'
 alias ls='ls -lG'
 alias la='ls -AG'
 
-export EDITOR=vim
-alias vim=/usr/local/bin/vim
-alias vi='vim'
+export EDITOR=nvim
+alias vim=nvim
+alias vi=nvim
 
 # use bat over cat
 alias cat='bat'
@@ -101,12 +99,19 @@ prompt pure
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
-# FZF config
+# Add fzf key bindings and completions to path
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-if [ -e /usr/local/opt/fzf/shell/completion.zsh ]; then
-  source /usr/local/opt/fzf/shell/key-bindings.zsh
-  source /usr/local/opt/fzf/shell/completion.zsh
+# Add tmux key completions to path
+[ -f ~/.bin/tmuxinator.zsh ] && source ~/.bin/tmuxinator.zsh
+
+# Add gcloud paths and completions to path
+if [ -f '/Users/drlaj/google-cloud-sdk/path.zsh.inc' ]; then
+  source '/Users/drlaj/google-cloud-sdk/path.zsh.inc';
+fi
+
+if [ -f '/Users/drlaj/google-cloud-sdk/completion.zsh.inc' ]; then
+  source '/Users/drlaj/google-cloud-sdk/completion.zsh.inc';
 fi
 
 #==============================================================================
@@ -114,7 +119,7 @@ fi
 #==============================================================================
 
 # Move last downloaded file to current directory
-ldf() {
+function ldf() {
   mv ~/Downloads/*(mh-3[1]) .
 }
 
@@ -131,9 +136,3 @@ if [ -s "$HOME/.nvm/nvm.sh" ] && [ ! "$(whence -w __init_nvm)" = function ]; the
   }
   for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
 fi
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/drlaj/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/drlaj/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/drlaj/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/drlaj/google-cloud-sdk/completion.zsh.inc'; fi
